@@ -40,6 +40,7 @@ def cadastrar():
         return redirect(url_for('static', filename='cadastrar.html'))
     else: #{'nome': 'tomate', 'preco':10}
         query = db.produtos.find_one(produto)
+        query = db.produtos.find_one(preco)
         # find => Cursor => list(Cursor) [{}, {}]
         # find_one => {}
         #if query: #tomate está no banco
@@ -47,6 +48,7 @@ def cadastrar():
             return {'error': 'Produto já cadastrado!'}
         else: # tomate não está no banco
             db.produtos.insert_one(produto)
+            db.produtos.insert_one(preco)
             del produto['_id']
             return produto   
 
