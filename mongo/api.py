@@ -1,25 +1,27 @@
 from flask import Flask, request, redirect, url_for, render_template
 from pymongo import MongoClient
+import os
 
 app = Flask(__name__)
-#conn = MongoClient('mongodb+srv://username:password@cluster0.rn9t8ag.mongodb.net/magalu'
+
+#mongopass = os.environ['mongopass']
+
 conn = MongoClient(
-    'mongodb+srv://canela:canelagrupo@cluster0.bhbsfvp.mongodb.net/test',
+    'mongodb+srv://cluster0.bhbsfvp.mongodb.net/test',
     username='canela',
     password='canelagrupo'
 )
 
-db = conn['<canela>']
+db = conn['canela']
 
 # Create
-#db.create_collection("<canelaLoja>")
+#db.create_collection("canelaLoja")
 #db.getCollectionNames()
-
 
 @app.route('/')
 def home():
     return redirect(url_for('static', filename='index.html'))
-@app.route('/cadastrar/', methods=['GET'])
+#@app.route('/cadastrar/', methods=['GET'])
 # ?nome=tomate&preco=10
 
 # Read
@@ -29,19 +31,24 @@ def consultar():
     produtos = list(cursor)
     return produtos
 
+@app.route('/cadastrar/')
+
 def cadastrar():
     produto = request.args.to_dict() #{'nome': 'tomate', 'preco':10}
     print(produto)
     if not produto: #{}
         return redirect(url_for('static', filename='cadastrar.html'))
     else: #{'nome': 'tomate', 'preco':10}
-        query = db.produtos.find_one({'nome': produto['nome']})
+        query = db.produtos.find_one(produto)
         # find => Cursor => list(Cursor) [{}, {}]
         # find_one => {}
         #if query: #tomate está no banco
+        if query: #tomate está no banco
+            return {'error': 'Produto já cadastrado!'}
+        else: # tomate não está no banco
+            db.produtos.insert_one(produto)
+            del produto['_id']
+            return produto   
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-#mongodb+srv://canela:<canelagrupo>@cluster0.bhbsfvp.mongodb.net/test
