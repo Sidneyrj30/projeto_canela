@@ -26,7 +26,7 @@ VALUES
 ("alface", 5, "alface lisa", 8),
 ("cereja", 20.00, "Bandeja de cereja 250g", 16),
 ("tomate", 10.53, "Tomate em lata", 5),
-("pepino", 7.98, "pepino 1/kg", 9), 
+("pepino", 7.98, "pepino 1/kg", 9),
 ("couve", 8.50, "couve galega", 7);
 
 
