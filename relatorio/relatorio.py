@@ -39,7 +39,7 @@ def rank():
     return resultado  
 
 @app.route('/total', methods=["GET"])
-def total():
+def total(): 
     conexao, cursor = abrir_conexao(True)
     cursor.execute(total_vendas)
     resultado = cursor.fetchall() 
