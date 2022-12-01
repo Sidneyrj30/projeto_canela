@@ -22,9 +22,12 @@
     <title>Cadastro</title>
 </head>
 <body>
-    <form action="/cadastrar" method="get">
+    <form action="/cadastrar" method="get"> 
         <label for="nome">Produto: </label>
         <input type="text" id="nome" name="nome" required>
         <br>
         <label for="preco">Preço: </label>
-        <input type="number" id="preco" name="preco" s
+        <input type="number" id="preco" name="preco" step="0.10" min="0" required>
+        <br>
+        <input type="submit" value="cadastrar"
+</body>
