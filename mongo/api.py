@@ -67,5 +67,21 @@ def atualizar():
         )
         return produto
 
+# Delete
+@app.route('/deletar/<nome>')
+def deletar_nome(nome):
+    produto = db.produtos.find_one({'nome': nome}, {'_id':False})
+    print(produto)
+    if produto: #tomate está no banco
+        db.produtos.delete_one({'nome': nome})
+        return {'message': 'Produto deletado com sucesso!'}
+    else: # tomate não está no banco
+        return {'error': 'Produto não encontrado!'}
+
+@app.route('/deletar/')
+def deletar():
+    db.produtos.drop()
+    return {'message': 'Banco de dados apagado!'}
+
 if __name__ == '__main__':
     app.run(debug=True)
