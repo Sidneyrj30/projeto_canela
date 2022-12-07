@@ -54,6 +54,5 @@ def consulta():
     fechar_conexao(conexao)
     return resultado     
 
-
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
