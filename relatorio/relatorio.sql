@@ -33,7 +33,7 @@ VALUES
 SELECT * from `VENDAS`;
 
 -- SELECT * FROM VENDAS ORDER BY quantidade DESC;
-
+ 
 DELETE FROM VENDAS;
 
 -- SELECT COUNT(nome) as total_produtos, SUM(quantidade) as total_quantidade, ROUND(SUM(preco), 2) as total_preco from VENDAS;

@@ -29,7 +29,7 @@ def rank():
     resultado = cursor.fetchall() 
     fechar_conexao(conexao)
     return resultado  
-
+ 
 @app.route('/total', methods=["GET"])
 def total():
     conexao, cursor = abrir_conexao(True)
