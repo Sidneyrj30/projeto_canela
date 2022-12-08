@@ -15,20 +15,32 @@ def test_total_status(client):
     response = client.get("/total")
     assert response.status_code == 200
 
-def test_rank(client):
+def test_rank_status(client):
     response = client.get("/rank")
     assert response.status_code == 200
 
-def test_rank_(client):
+def test_rank_desc(client):
     response = client.get("/rank")
-    assert response.json[0]["quantidade"] > response.json[1]["quantidade"]
+    assert response.json[0]["quantidade"] >= response.json[1]["quantidade"]
 
-def test_rank_10(client):
+def test_rank_10_len(client):
     response = client.get("/rank_10")
-    assert len(response.json) == 10
+    assert len(response.json) <= 10
 
-    
-      
+def test_rank_10_desc(client):
+    response = client.get("/rank_10")
+    assert response.json[0]["quantidade"] >= response.json[1]["quantidade"]
+
+def test_consulta_status(client):
+    response = client.get("/consulta")
+    assert response.status_code == 200
+
+def test_consulta_status(client):
+    response = client.get("/consulta")
+    assert "nome" in response.text
+    assert "preco" in response.text
+    assert "descricao" in response.text
+    assert "quantidade" in response.text       
 # import requests
 
 # def test_total():
