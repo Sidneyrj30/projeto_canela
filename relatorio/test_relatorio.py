@@ -35,12 +35,12 @@ def test_consulta_status(client):
     response = client.get("/consulta")
     assert response.status_code == 200
 
-def test_consulta_status(client):
+def test_consulta_colunas(client):
     response = client.get("/consulta")
-    assert "nome" in response.text
-    assert "preco" in response.text
-    assert "descricao" in response.text
-    assert "quantidade" in response.text       
+    colunas = [ "nome", "preco", "descricao", "quantidade"]
+    for coluna in colunas:
+        assert coluna in response.json[0].keys()
+      
 # import requests
 
 # def test_total():
