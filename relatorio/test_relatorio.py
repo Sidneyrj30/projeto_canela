@@ -40,6 +40,27 @@ def test_consulta_colunas(client):
     colunas = [ "nome", "preco", "descricao", "quantidade"]
     for coluna in colunas:
         assert coluna in response.json[0].keys()
+
+def test_registro_status(client):
+    produto = { "nome": "teste", "preco": 5, "descricao": "tgnns", "quantidade": 34}
+    response = client.post("/registro",json= produto)
+    assert response.status_code == 200
+      
+def test_registro_text(client):
+    produto = { "nome": "teste", "preco": 5, "descricao": "tgnns", "quantidade": 34}
+    response = client.post("/registro",json= produto)
+    assert "Produto adicionado com sucesso!" in response.text
+
+def test_deleta_status(client):
+    response = client.delete("/deleta")
+    assert response.status_code == 200 
+
+def test_deleta_text(client):
+    response = client.delete("/deleta")
+    assert "todos os dados foram deletados com sucesso!" in response.text
+    
+
+    
       
 # import requests
 
