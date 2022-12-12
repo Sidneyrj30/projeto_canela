@@ -52,13 +52,13 @@ def consultar_nome(nome):
 
 @app.route('/atualizar/')
 def atualizar():
-    produto = request.args.to_dict() #{'nome': 'tomate', 'preco':10}
+    produto = request.args.to_dict()
     print(produto)
-    if not produto: #{}
+    if not produto:
         produtos = consultar()
         print(produtos)
         return render_template('atualizar.html', produtos=produtos)
-    else: #{'nome': 'tomate', 'preco':10}
+    else: 
         db.produtos.update_one(
             {'nome': produto['nome']},
             {'$set':
@@ -67,16 +67,23 @@ def atualizar():
         )
         return produto
 
-# Delete
-@app.route('/deletar/<nome>')
+# Deletar 
+@app.route('/deletar/<nome>', methods=['GET'])
 def deletar_nome(nome):
-    produto = db.produtos.find_one({'nome': nome}, {'_id':False})
-    print(produto)
-    if produto: #tomate está no banco
-        db.produtos.delete_one({'nome': nome})
-        return {'message': 'Produto deletado com sucesso!'}
-    else: # tomate não está no banco
-        return {'error': 'Produto não encontrado!'}
+    produtos = consultar_nome(nome)
+    print(produtos)
+    if 'error' in produtos:
+        return produtos
+    else:
+        produto =  db.produtos.delete_one({'nome': nome})
+        return {'message': 'Produto deletado!'}
+    return render_template('deletar.html', produtos=produtos)
+   
+   # if produto: #tomate está no banco
+       # db.produtos.delete_one({'nome': nome})
+        #return {'message': 'Produto deletado com sucesso!'}
+   # else: # tomate não está no banco
+        #return {'error': 'Produto não encontrado!'}
 
 @app.route('/deletar/')
 def deletar():
