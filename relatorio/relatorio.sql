@@ -1,4 +1,4 @@
--- Active: 1666902268649@@127.0.0.1@3306@projeto_canela
+-- Active: 1670869174493@@127.0.0.1@3306@projeto_canela
 CREATE DATABASE IF NOT EXISTS projeto_canela
     DEFAULT CHARACTER SET = 'utf8mb4';
 
@@ -34,7 +34,7 @@ SELECT * from `VENDAS`;
 
 -- SELECT * FROM VENDAS ORDER BY quantidade DESC;
  
-DELETE FROM VENDAS;
+-- DELETE FROM VENDAS;
 
 -- SELECT COUNT(nome) as total_produtos, SUM(quantidade) as total_quantidade, ROUND(SUM(preco), 2) as total_preco from VENDAS;
 
