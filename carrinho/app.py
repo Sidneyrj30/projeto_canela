@@ -24,18 +24,17 @@ select_id = "SELECT * FROM produto_carrinho WHERE id like ?"
 delete_id = "DELETE FROM produto_carrinho WHERE id like ?"
 select_nome = "SELECT * FROM produto_carrinho WHERE nome like ?"
 delete_nome = "DELETE FROM produto_carrinho WHERE nome like ?"
-insert = "INSERT INTO produto_carrinho VALUES (:id, :nome, :quantidade)"
+insert = "INSERT INTO produto_carrinho VALUES (:id, :nome, :quantidade, :preco)"
 update = '''
 UPDATE produto_carrinho SET
     id = :id,
-    nome= :nome,
     quantidade = :quantidade
 WHERE id like :id
 '''
 
 # Adição de produtos
 @app.route('/add/')
-#?id=1&nome=banana&quantidade=25
+#?id=1&nome=banana&quantidade=25&preco=12.90
 def adicionar_produto_carrinho():
     produto=request.args.to_dict() #{chave: valor, chave:valor,...}
     if produto: # se tem argumento
