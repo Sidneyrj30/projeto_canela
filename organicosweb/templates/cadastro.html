@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<header class="bg-success py-5">
+    <div class="container px-4 px-lg-5 my-3">
+        <div class="text-center text-white">
+            <h1 class="display-1 ">Cadastro de Produtos</h1>
+</header>
+        
+
+<form action="/cadastro" method="get" style="border: 1px;width: 320px; margin: auto; text-align: left; ">
+    <div class="form-group">
+      <br>
+      <!--label for="formGroupExampleInput">Insira o nome do produto</label-->
+      <input type="text" class="form-control" name="nome" style="width: 400px;" id="formGroupExampleInput" placeholder="Insira o nome do produto" required>
+    </div>
+    <div class="form-group">
+      <br>
+      <!--label for="formGroupExampleInput2">insira o valor do produto</label-->
+      <input type="number" min="0" step="0.01" class="form-control" style="width:400px;" name="preco" id="formGroupExampleInput2" placeholder="insira o valor do produto" required>
+    </div>
+    <div class="form-group">
+      <br>
+      <!--label for="formGroupExampleInput2">insira a quantidade</label-->
+      <input type="number" min="0" class="form-control" style="width: 400px;" name="quantidade" id="formGroupExampleInput2" placeholder="insira a quantidade" required>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-light">Cadastrar</button>
+  </form>
+
+</body>
+{% endblock %}

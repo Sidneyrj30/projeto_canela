@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+{% block body %}
+    
+        <header class="bg-success py-5">
+            <div class="container px-4 px-lg-5 my-3">
+                <div class="text-center text-white">
+                    <h1 class="display-1 ">Carrinho</h1>
+                </div>
+            </div>
+        </header>
+    {% if cart[0] is not none %}
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {% for item in cart %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="https://testeapi.brunofernande32.repl.co/{{item[1]}}" alt="imagem nao encontrada relatar ao administrador" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{item[1]}}</h5>
+                                    <!-- Product price-->
+                                    R${{"%.2f" | format(item[3])}}
+                                    <br>
+                                    <!-- =============== -->
+                                    <form action="/updateCarrinho/{{item[0]}}/" method="get" >
+                                        <div class="form-group">
+                                          <br>
+                                          Quantidade: <input type="number" min="0" value="{{item[2]}}" class="card-footer p-4 pt-0 border-top-4 bg-transparent" style="width: 100px; border: 1px;" name="quantidade" id="formGroupExampleInput2" required>
+                                        </div>
+                                        Total: {{item[3]*item[2]}}
+                                        <br>
+                                        <button type="submit" class="btn btn-light">Atualizar quantidade</button>
+                                      </form>
+                                    <!-- =============== -->
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href='/deletarCarrinho/{{item[0]}}'>Remover do carrinho</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href='/gerarRelatorio'>Finalizar compra</a></div>
+    {% else %}
+        <div class="jumbotron text-center mx-auto" style="margin-top: 100px; margin-bottom: 270px;">
+            <div class="container">
+            <h1 class="display-1">Ops</h1>
+            <p class="lead">Você não tem produtos no carrinho</p>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
