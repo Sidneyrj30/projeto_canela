@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+{% block body %}
+<header class="bg-success py-5">
+    <div class="container px-4 px-lg-5 my-3">
+        <div class="text-center text-white">
+            <h1 class="display-1 ">Produtos</h1>
+            </div>
+    </div>
+</header>
+
+          {% if produtos|length > 0 %}
+            <section class="py-5">
+                <div class="container px-4 px-lg-5 mt-5">
+                    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                {% for produto in produtos %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="https://testeapi.brunofernande32.repl.co/{{produto.nome}}" alt="imagem nao encontrada relatar ao administrador" />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{produto.nome}}</h5>
+                                <!-- Product qtd-->
+                                Estoque {{"%.0f" | format(produto.quantidade)}}
+                                <!-- Product price-->
+                                <br><br>
+                                R${{"%.2f" | format(produto.preco)}}
+
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-danger btn-block" href="/deletar/{{produto.id}}">Excluir</a></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="jumbotron text-center mx-auto" style="margin-top: 100px; margin-bottom: 270px;">
+                    <div class="container">
+                    <h1 class="display-1">Ops</h1>
+                    <p class="lead">Não tem produtos para listar</p>
+                    </div>
+                </div>
+            {% endif %}
+    </div>
+    </div>
+</section>
+
+{% endblock %}

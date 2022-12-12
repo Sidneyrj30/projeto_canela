@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <header class="bg-success py-5">
+        <div class="container px-4 px-lg-5 my-3">
+            <div class="text-center text-white">
+                <h1 class="display-1 ">Relatório</h1>
+            </div>
+        </div>
+    </header>
+    {% if relatorio|length > 0 %}
+    <table class="table mx-auto mt-5 w-50">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Preço Unitário</th>
+            <th scope="col">Quantidade</th>
+            <th scope="col">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for produto in relatorio %}
+          <tr>
+            <td>{{produto.nome}}</td>
+            <td>R${{"%.2f" | format(produto.preco)}}</td>
+            <td>{{produto.quantidade}}</td>
+            <td>R${{"%.2f" | format(produto.quantidade * produto.preco)}}</td>
+          </tr>
+          {% endfor %}
+          </tr>
+        </tbody>
+        <tfoot> 
+            <th>TOTAL</th>
+            <th></th>
+            <th></th>
+            <th>R${{total}}</th>
+        </tfoot>
+    </table>
+       {% else %}
+        <div class="jumbotron text-center mx-auto" style="margin-top: 100px; margin-bottom: 270px;">
+            <div class="container">
+            <h1 class="display-1">Ops</h1>
+            <p class="lead">Não tem produtos para o relatório</p>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
