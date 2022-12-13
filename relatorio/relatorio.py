@@ -8,14 +8,14 @@ def abrir_conexao(dicionario=False):
         conexao = sql.connect(
         host="127.0.0.1",
         user="root",
-        password="canela",
+        password="vB?#",
         database="projeto_canela_teste"
     )
     else:
         conexao = sql.connect(
         host="127.0.0.1",
         user="root",
-        password="canela",
+        password="vB?#",
         database="projeto_canela"
         )
     cursor = conexao.cursor(dictionary=dicionario)
@@ -42,10 +42,9 @@ rank_10_vendas = "SELECT * FROM VENDAS ORDER BY quantidade DESC LIMIT 10;"
 relatorio_vendas = "SELECT * FROM VENDAS"
 limpar_vendas = "DELETE FROM VENDAS"
 registro_vendas = '''
-INSERT INTO VENDAS (nome, preco, descricao, quantidade) VALUES
+INSERT INTO VENDAS (nome, preco, quantidade) VALUES
     (%(nome)s,
     %(preco)s,
-    %(descricao)s,
      %(quantidade)s)'''
 
 @app.route('/registro', methods=["POST"])

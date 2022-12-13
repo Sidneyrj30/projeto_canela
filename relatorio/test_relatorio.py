@@ -37,17 +37,17 @@ def test_consulta_status(client):
 
 def test_consulta_colunas(client):
     response = client.get("/consulta")
-    colunas = [ "nome", "preco", "descricao", "quantidade"]
+    colunas = [ "nome", "preco", "quantidade"]
     for coluna in colunas:
         assert coluna in response.json[0].keys()
 
 def test_registro_status(client):
-    produto = { "nome": "teste", "preco": 5, "descricao": "tgnns", "quantidade": 34}
+    produto = { "nome": "teste", "preco": 5, "quantidade": 34}
     response = client.post("/registro",json= produto)
     assert response.status_code == 200
       
 def test_registro_text(client):
-    produto = { "nome": "teste", "preco": 5, "descricao": "tgnns", "quantidade": 34}
+    produto = { "nome": "teste", "preco": 5, "quantidade": 34}
     response = client.post("/registro",json= produto)
     assert "Produto adicionado com sucesso!" in response.text
 
