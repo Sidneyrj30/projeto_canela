@@ -24,7 +24,7 @@ select_id = "SELECT * FROM produto_carrinho WHERE id like ?"
 delete_id = "DELETE FROM produto_carrinho WHERE id like ?"
 select_nome = "SELECT * FROM produto_carrinho WHERE nome like ?"
 delete_nome = "DELETE FROM produto_carrinho WHERE nome like ?"
-insert = "INSERT INTO produto_carrinho VALUES (:id, :nome, :quantidade, :preco)"
+insert = "INSERT INTO produto_carrinho VALUES (null, :nome, :quantidade, :preco)"
 update = '''
 UPDATE produto_carrinho SET
     id = :id,
@@ -95,5 +95,5 @@ def read_id(id):
     fechar_con(con)
     return resultado
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(app.run(port=8080, host='0.0.0.0', debug=True))

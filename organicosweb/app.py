@@ -13,7 +13,8 @@ Relatorio = pd.DataFrame([])
 
 @app.route('/')
 def index():
-    return render_template('home.html', carrinho = Carrinho.to_dict('records'))
+    cart = requests.get('http://127.0.0.1:8080/read/')
+    return render_template('home.html', carrinho = cart.json())
 
 @app.route('/teste')
 def teste():
@@ -49,35 +50,35 @@ def deletar(nome):
 #pendente
 @app.route('/vendas')
 def vendas():
-    global df
-    df = pd.read_json('data.json')
-    return render_template('/vendas.html', produtos = df.to_dict('records'), carrinho = Carrinho.to_dict('records'))
+    produto = (requests.get(f'http://127.0.0.1:8000/consultar/'))
+    cart = requests.get('http://127.0.0.1:8080/read/')
+    return render_template('vendas.html', produtos = produto.json(), carrinho = cart.json())
 
-@app.route('/adicionar/<id>/<nome>/<preco>')
-def adicionarCarrinho(id,nome,preco):
+@app.route('/adicionar/<nome>/<preco>')
+def adicionarCarrinho(nome,preco):
     argumentos = request.args.to_dict()
     print('print dos argumentos' ,argumentos)
     quantidade = argumentos['quantidade']
-    # preco = argumentos['preco']
-    cart = requests.get(f'http://127.0.0.1:5000/add/?id={id}&nome={nome}&quantidade={quantidade}&preco={preco}')
+    cart = requests.get('http://127.0.0.1:8080/read/')
+    requests.get(f'http://127.0.0.1:8080/add/?nome={nome}&quantidade={quantidade}&preco={preco}')
     return redirect('/vendas')
 
 
 @app.route('/carrinho')
 def carrinho():
-    cart = requests.get('http://127.0.0.1:5000/read/')
-    return render_template('carrinho.html', cart = cart.json())
+    cart = requests.get('http://127.0.0.1:8080/read/')
+    return render_template('carrinho.html', carrinho = cart.json())
 
 @app.route('/deletarCarrinho/<id>')
 def deletarCarrinho(id):
-    cart = requests.get(f'http://127.0.0.1:5000/delete/{id}/')
+    cart = requests.get(f'http://127.0.0.1:8080/delete/{id}/')
     return redirect('/carrinho')
 
 @app.route('/updateCarrinho/<id>/')
 def updateCarrinho(id):
     argumentos = request.args.to_dict()
     argumentos= argumentos['quantidade']
-    cart = requests.get(f'http://127.0.0.1:5000/update/{id}/?id={id}&quantidade={argumentos}')
+    cart = requests.get(f'http://127.0.0.1:8080/update/{id}/?id={id}&quantidade={argumentos}')
     return redirect('/carrinho')
     
 

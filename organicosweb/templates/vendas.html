@@ -24,15 +24,15 @@
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
-                        <img class="card-img-top" src="https://testeapi.brunofernande32.repl.co/{{produto.nome}}" alt="imagem nao encontrada relatar ao administrador"/>
+                        <img class="card-img-top" src="https://testeapi.brunofernande32.repl.co/{{produto['nome']}}" alt="imagem nao encontrada relatar ao administrador"/>
                         <!-- Product details-->
                         <div class="card-body p-3">
                             <div class="text-center">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder">{{produto.nome}}</h5>
+                                <h5 class="fw-bolder">{{produto['nome']}}</h5>
                                 <!-- Product price-->
-                                <p class="mb-3">Estoque {{produto.quantidade}}</p>                                
-                                R${{"%.2f" | format(produto.preco)}}                               
+                                <p class="mb-3">Estoque {{produto['quantidade']}}</p>                                
+                                {{produto['preco']}}                               
                             </div>
                         </div>
                         <div class="mx-auto" >
