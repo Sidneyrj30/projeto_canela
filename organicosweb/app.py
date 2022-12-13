@@ -21,32 +21,27 @@ def teste():
 
 @app.route('/listar_produtos')
 def listar():
-    global df
-    df = pd.read_json('data.json')
-    return render_template('listar_produtos.html', produtos = df.to_dict('records'), carrinho = Carrinho.to_dict('records') )
+    produto = (requests.get(f'http://127.0.0.1:8000/consultar/'))
+    return render_template('listar_produtos.html', produtos = produto.json())
+    
 
 @app.route('/cadastro')
 def cadastro():
-    return render_template('cadastro.html', carrinho = Carrinho.to_dict('records'))
+   return render_template('cadastro.html')
 
-@app.route('/cadastrado')#/adicionar?produto=valor&preco=valor
-def cadastrado():
-    global df
-    argumentos = request.args.to_dict(True)
-    #print(argumentos)
-    if df.empty:
-        argumentos['id'] = [1]
-    else:
-        argumentos['id'] = [df['id'].max() + 1]
-    df = pd.concat([df, pd.DataFrame(argumentos)], ignore_index=True)
-    df.to_json('data.json', orient='records')
+@app.route('/cadastrar')
+def adicionarProduto():
+    argumentos = request.args.to_dict()
+    quantidade = argumentos['quantidade']
+    nome = argumentos['nome']
+    preco = argumentos['preco']
+    argRequest = requests.get(f'http://127.0.0.1:8000/cadastrar/?nome={nome}&quantidade={quantidade}&preco={preco}')
     return redirect('/cadastro')
 
-@app.route('/deletar/<id>')
-def deletar(id):
-    mask_id = df[df['id'] == int(id)].index
-    df.drop(mask_id, axis=0, inplace=True)
-    df.to_json('data.json', orient='records')
+@app.route('/deletar/<nome>')
+def deletar(nome):
+    argRequest = requests.get(f'http://127.0.0.1:8000/deletar/{nome}')
+
     return redirect('/listar_produtos')
 
 #Vendas carrinho ========================================================  

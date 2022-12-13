@@ -26,10 +26,9 @@ def cadastrar():
         return redirect(url_for('static', filename='cadastrar.html'))
     else:
         query = db.produtos.find_one({'nome': produto['nome']})
-        #query = db.produtos.find_one(produto)
-        if query: #tomate está no banco
+        if query:
             return {'error': 'Produto já cadastrado!'}
-        else: # tomate não está no banco
+        else: 
             db.produtos.insert_one(produto)
             del produto['_id']
             return produto   
@@ -91,4 +90,4 @@ def deletar():
     return {'message': 'Banco de dados apagado!'}
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(app.run(port=8000, host='0.0.0.0', debug=True))

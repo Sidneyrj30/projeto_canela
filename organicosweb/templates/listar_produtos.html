@@ -8,7 +8,7 @@
     </div>
 </header>
 
-          {% if produtos|length > 0 %}
+        {% if produtos[0] is not none %}
             <section class="py-5">
                 <div class="container px-4 px-lg-5 mt-5">
                     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -22,18 +22,18 @@
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder">{{produto.nome}}</h5>
+                                <h5 class="fw-bolder">{{produto['nome']}}</h5>
                                 <!-- Product qtd-->
-                                Estoque {{"%.0f" | format(produto.quantidade)}}
+                                Estoque {{produto['quantidade']}}
                                 <!-- Product price-->
                                 <br><br>
-                                R${{"%.2f" | format(produto.preco)}}
+                                R${{produto['preco']}}
 
                             </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-danger btn-block" href="/deletar/{{produto.id}}">Excluir</a></div>
+                            <div class="text-center"><a class="btn btn-danger btn-block" href="/deletar/{{produto['nome']}}">Excluir</a></div>
                         </div>
                     </div>
                 </div>
