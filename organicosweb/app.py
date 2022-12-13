@@ -108,13 +108,14 @@ def gerarRelatorio():
 
 @app.route('/relatorio')
 def relatorio():
-    global Relatorio
-    relatorio_dict = Relatorio.to_dict('records')
+    url = "http://127.0.0.1:8000/consulta"
+    response = requests.get(url)
+    relatorio = response.json()
     total = 0
-    for produto in relatorio_dict:
+    for produto in relatorio:
         total = total + produto["quantidade"] * produto["preco"]
     return render_template('relatorio.html', 
-    relatorio = Relatorio.to_dict('records'), carrinho = Carrinho.to_dict('records'),
+    relatorio = relatorio, carrinho = Carrinho.to_dict('records'),
     total=total) 
 
 if __name__ == '__main__':
