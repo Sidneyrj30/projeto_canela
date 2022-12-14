@@ -19,7 +19,7 @@ def fechar_con(con):
 contagem = "SELECT COUNT(*) FROM produto_carrinho;"
 select_todos = "SELECT * FROM produto_carrinho;"
 truncate = "DELETE FROM produto_carrinho;" #"TRUNCATE TABLE produto_carrinho;"
-
+group_by = "SELECT id,nome, sum(quantidade) as quantidade,preco FROM produto_carrinho WHERE quantidade >= 1 GROUP BY nome;"
 select_id = "SELECT * FROM produto_carrinho WHERE id like ?"
 delete_id = "DELETE FROM produto_carrinho WHERE id like ?"
 select_nome = "SELECT * FROM produto_carrinho WHERE nome like ?"
@@ -84,9 +84,10 @@ def update_id(id):
 @app.route('/read/')
 def read():
     con, cur = abrir_con(banco)
-    resultado = cur.execute(select_todos).fetchall()
+    cur.execute(select_todos).fetchall()
+    agrupado = cur.execute(group_by).fetchall()
     fechar_con(con)
-    return resultado
+    return agrupado
 
 @app.route('/read/<id>/')
 def read_id(id):

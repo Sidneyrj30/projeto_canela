@@ -57,7 +57,6 @@ def vendas():
 @app.route('/adicionar/<nome>/<preco>')
 def adicionarCarrinho(nome,preco):
     argumentos = request.args.to_dict()
-    print('print dos argumentos' ,argumentos)
     quantidade = argumentos['quantidade']
     cart = requests.get('http://127.0.0.1:8080/read/')
     requests.get(f'http://127.0.0.1:8080/add/?nome={nome}&quantidade={quantidade}&preco={preco}')

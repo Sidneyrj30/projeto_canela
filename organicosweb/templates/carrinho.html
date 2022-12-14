@@ -29,11 +29,15 @@
                                     <form action="/updateCarrinho/{{item[0]}}/" method="get" >
                                         <div class="form-group">
                                           <br>
-                                          Quantidade: <input type="number" min="0" value="{{item[2]}}" class="card-footer p-4 pt-0 border-top-4 bg-transparent" style="width: 100px; border: 1px;" name="quantidade" id="formGroupExampleInput2" required>
+                                            <div style="float: right"><a class="btn btn-outline-dark mt-auto" href='/updateCarrinho/{{item[0]}}/?quantidade={{item[2]+1}}'>+</a></div>
+                                        {{item[2]}}
+                                        <div style="float: left"><a class="btn btn-outline-dark mt-auto" href='/updateCarrinho/{{item[0]}}/?quantidade={{item[2]-1}}'>-</a></div>
                                         </div>
-                                        Total: {{item[3]*item[2]}}
                                         <br>
-                                        <button type="submit" class="btn btn-light">Atualizar quantidade</button>
+                                        <br>
+                                        Total: R${{"%.2f" | format(item[3]*item[2])}}
+                                        <br>
+                                        <!-- <button type="submit" class="btn btn-light" >Atualizar quantidade</button> -->
                                       </form>
                                     <!-- =============== -->
                                 </div>
