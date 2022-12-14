@@ -1,6 +1,7 @@
 from flask import Flask, render_template,request,redirect, flash
 import pandas as pd
 import requests
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "my super secret key"
@@ -10,6 +11,9 @@ produtos = df.to_dict('records')
 
 Carrinho = pd.DataFrame([])
 Relatorio = pd.DataFrame([])
+
+def convert_string_to_int(dict_):
+    dict_["quantidade"] = int(dict_["quantidade"])
 
 @app.route('/')
 def index():
@@ -90,37 +94,28 @@ def updateCarrinho(id):
     cart = requests.get(f'http://127.0.0.1:8080/update_id/{id}/?id={id}&quantidade={argumentos}')
     return redirect('/carrinho')
     
-
 @app.route('/gerarRelatorio')
 def gerarRelatorio():
-    global Relatorio
-    global Carrinho
-    carrinho_dict = Carrinho.to_dict('records')
-    if Relatorio.empty:
-     Relatorio = pd.concat([Relatorio, Carrinho])
-    else:
-        for produto in carrinho_dict:
-            resultado = Relatorio['nome'] == produto['nome']
-            if Relatorio[resultado].empty:
-                print("Não tem!")
-                Relatorio = pd.concat([Relatorio, pd.DataFrame(produto, index=[0])], ignore_index=True) #sem o index =[0] da erro
-            else:
-                print("Ok, esse existe")
-                Relatorio.loc[resultado, "quantidade"] = Relatorio[resultado]["quantidade"].values[0] + produto['quantidade']  
-    Carrinho = pd.DataFrame([]) 
-    # global Relatorio
-    # global Carrinho
-    # Relatorio = pd.concat([Relatorio, Carrinho.copy()])
-    # Carrinho = pd.DataFrame([])
-    # print(Relatorio)
+    cart = requests.get('http://127.0.0.1:8080/read/')
+    carrinho_list = cart.json()
+    carrinho = pd.DataFrame(carrinho_list, columns= ["id", "nome", "quantidade", "preco"])
+    carrinho.drop('id', inplace=True, axis=1)
+    carrinho_dict = carrinho.to_dict("records")
+    for item in carrinho_dict:
+        requests.post("http://127.0.0.1:3000/registro",json = item)
+
+    requests.get('http://127.0.0.1:8080/delete_all') 
     return redirect('/carrinho')
+
 #=====================================================
 
 @app.route('/relatorio')
 def relatorio():
-    url = "http://127.0.0.1:8000/consulta"
+    url = "http://127.0.0.1:3000/consulta_agrupada"
     response = requests.get(url)
     relatorio = response.json()
+    for produto in relatorio:
+        produto["quantidade"] = int(produto["quantidade"])   
     total = 0
     for produto in relatorio:
         total = total + produto["quantidade"] * produto["preco"]

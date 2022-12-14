@@ -21,16 +21,6 @@ def abrir_conexao(dicionario=False):
     cursor = conexao.cursor(dictionary=dicionario)
     return conexao, cursor
 
-# def abrir_conexao(dicionario=False):
-#     conexao = sql.connect(
-#         host="127.0.0.1",
-#         user="root",
-#         password="Airplanes42",
-#         database="projeto_canela"
-#     )
-#     cursor = conexao.cursor(dictionary=dicionario)
-#     return conexao, cursor
-
 def fechar_conexao(conexao):
     conexao.commit()
     conexao.close()
@@ -40,6 +30,7 @@ rank_vendas = "SELECT * FROM VENDAS ORDER BY quantidade DESC;"
 consulta_vendas = "SELECT * FROM VENDAS;"
 rank_10_vendas = "SELECT * FROM VENDAS ORDER BY quantidade DESC LIMIT 10;"
 relatorio_vendas = "SELECT * FROM VENDAS"
+relatorio_vendas_agrupado = " SELECT nome, preco, sum(quantidade) as quantidade FROM VENDAS GROUP BY nome, preco;"
 limpar_vendas = "DELETE FROM VENDAS"
 registro_vendas = '''
 INSERT INTO VENDAS (nome, preco, quantidade) VALUES
@@ -104,5 +95,14 @@ def consulta():
     fechar_conexao(conexao)
     return resultado     
 
+@app.route('/consulta_agrupada', methods=["GET"])
+def consulta_agrupada():
+    conexao, cursor = abrir_conexao(True)
+    cursor.execute(relatorio_vendas_agrupado)
+    resultado = cursor.fetchall() 
+    fechar_conexao(conexao)
+    return resultado   
+
+
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=3000)
