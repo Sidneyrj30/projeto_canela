@@ -57,9 +57,19 @@ def vendas():
 @app.route('/adicionar/<nome>/<preco>')
 def adicionarCarrinho(nome,preco):
     argumentos = request.args.to_dict()
-    quantidade = argumentos['quantidade']
+    quantidade = int(argumentos['quantidade'])
     cart = requests.get('http://127.0.0.1:8080/read/')
-    requests.get(f'http://127.0.0.1:8080/add/?nome={nome}&quantidade={quantidade}&preco={preco}')
+    cart = cart.json()
+    verifica_nome = False
+    for item in cart:
+        if item[1] == nome:
+            quantidade_antiga= int(item[2])
+            verifica_nome = True
+    if verifica_nome == True:
+        soma=quantidade+quantidade_antiga
+        requests.get(f'http://127.0.0.1:8080/update_nome/{nome}/?nome={nome}&quantidade={soma}')
+    else:
+        requests.get(f'http://127.0.0.1:8080/add/?nome={nome}&quantidade={quantidade}&preco={preco}')
     return redirect('/vendas')
 
 
@@ -77,7 +87,7 @@ def deletarCarrinho(id):
 def updateCarrinho(id):
     argumentos = request.args.to_dict()
     argumentos= argumentos['quantidade']
-    cart = requests.get(f'http://127.0.0.1:8080/update/{id}/?id={id}&quantidade={argumentos}')
+    cart = requests.get(f'http://127.0.0.1:8080/update_id/{id}/?id={id}&quantidade={argumentos}')
     return redirect('/carrinho')
     
 

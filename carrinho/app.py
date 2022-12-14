@@ -31,6 +31,11 @@ UPDATE produto_carrinho SET
     quantidade = :quantidade
 WHERE id like :id
 '''
+update_name = '''
+UPDATE produto_carrinho SET
+    quantidade = :quantidade
+WHERE nome like :nome
+'''
 
 # Adição de produtos
 @app.route('/add/')
@@ -62,7 +67,7 @@ def delete_tudo():
 # Alteração de quantidade
 #?id=1&nome=banana&quantidade=12
 # update
-@app.route('/update/<id>/')
+@app.route('/update_id/<id>/')
 def update_id(id):
     consulta = read_id(id)
     if consulta: # existe nome no banco de dados
@@ -78,16 +83,30 @@ def update_id(id):
     else: # não existe no banco de dados
         return {'erro': 'produto não encontrado!'}
 
+@app.route('/update_nome/<nome>/')
+def update_nome(nome):
+    consulta = read_nome(nome)
+    if consulta: # existe nome no banco de dados
+        produto=request.args.to_dict() #{chave: valor, chave:valor,...}
+        if produto: # se tem argumento
+            con, cur = abrir_con(banco)
+            cur.execute(update_name, produto)
+            fechar_con(con)
+            return produto
+        else: # se não tem argumento
+            return render_template('atualizacao.html', produto=consulta[0],nome=nome)
+    else: # não existe no banco de dados
+        return {'erro': 'produto não encontrado!'}
+
 # Consulta de itens
 # read por id
 # read all
 @app.route('/read/')
 def read():
     con, cur = abrir_con(banco)
-    cur.execute(select_todos).fetchall()
-    agrupado = cur.execute(group_by).fetchall()
+    resultado = cur.execute(select_todos).fetchall()
     fechar_con(con)
-    return agrupado
+    return resultado
 
 @app.route('/read/<id>/')
 def read_id(id):
@@ -95,6 +114,15 @@ def read_id(id):
     resultado = cur.execute(select_id, [id]).fetchall()
     fechar_con(con)
     return resultado
+
+@app.route('/read/<nome>/')
+def read_nome(nome):
+    con, cur = abrir_con(banco)
+    resultado = cur.execute(select_nome, [nome]).fetchall()
+    fechar_con(con)
+    return resultado
+
+
 
 if __name__ == '__main__':
     app.run(app.run(port=8080, host='0.0.0.0', debug=True))
