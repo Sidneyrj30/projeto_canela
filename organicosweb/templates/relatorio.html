@@ -23,7 +23,7 @@
             <td>{{produto.nome}}</td>
             <td>R${{"%.2f" | format(produto.preco)}}</td>
             <td>{{produto.quantidade}}</td>
-            <td>R${{"%.2f" | format(produto.quantidade * produto.preco)}}</td>
+            <td>R${{"%.2f" | format(produto.total)}}</td>
           </tr>
           {% endfor %}
           </tr>

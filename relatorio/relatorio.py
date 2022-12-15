@@ -25,12 +25,12 @@ def fechar_conexao(conexao):
     conexao.commit()
     conexao.close()
 
-total_vendas = "SELECT COUNT(nome) as total_produtos, SUM(quantidade) as total_quantidade, ROUND(SUM(preco), 2) as total_preco from VENDAS;"
+total_vendas = "SELECT COUNT(nome) as total_produtos, ROUND(SUM(quantidade),2) as total_quantidade, ROUND(SUM(preco), 2) as total_preco from VENDAS;"
 rank_vendas = "SELECT * FROM VENDAS ORDER BY quantidade DESC;" 
 consulta_vendas = "SELECT * FROM VENDAS;"
 rank_10_vendas = "SELECT * FROM VENDAS ORDER BY quantidade DESC LIMIT 10;"
 relatorio_vendas = "SELECT * FROM VENDAS"
-relatorio_vendas_agrupado = " SELECT nome, preco, sum(quantidade) as quantidade FROM VENDAS GROUP BY nome, preco;"
+relatorio_vendas_agrupado = "SELECT nome, preco, sum(quantidade) as quantidade, round(sum(quantidade) * preco, 2) as total FROM VENDAS GROUP BY nome, preco;"
 limpar_vendas = "DELETE FROM VENDAS"
 registro_vendas = '''
 INSERT INTO VENDAS (nome, preco, quantidade) VALUES
