@@ -25,6 +25,7 @@ delete_id = "DELETE FROM produto_carrinho WHERE id like ?"
 select_nome = "SELECT * FROM produto_carrinho WHERE nome like ?"
 delete_nome = "DELETE FROM produto_carrinho WHERE nome like ?"
 insert = "INSERT INTO produto_carrinho VALUES (null, :nome, :quantidade, :preco)"
+insert_id = "INSERT INTO produto_carrinho VALUES (:id, :nome, :quantidade, :preco)"
 update = '''
 UPDATE produto_carrinho SET
     id = :id,
@@ -42,13 +43,22 @@ WHERE nome like :nome
 #?id=1&nome=banana&quantidade=25&preco=12.90
 def adicionar_produto_carrinho():
     produto=request.args.to_dict() #{chave: valor, chave:valor,...}
-    if produto: # se tem argumento
-        con, cur = abrir_con(banco)
-        cur.execute(insert, produto)
-        fechar_con(con)
-        return produto
-    else: # se não tem argumento
-        return {'error': 'solicitação sem argumentos!'}
+    if 'id' not in produto:
+        if produto: # se tem argumento
+            con, cur = abrir_con(banco)
+            cur.execute(insert, produto)
+            fechar_con(con)
+            return produto
+        else: # se não tem argumento
+            return {'error': 'solicitação sem argumentos!'}
+    else:
+        if produto: # se tem argumento
+            con, cur = abrir_con(banco)
+            cur.execute(insert_id, produto)
+            fechar_con(con)
+            return produto
+        else: # se não tem argumento
+            return {'error': 'solicitação sem argumentos!'}
 
 # Remoção de produtos
 @app.route('/delete/<id>/')
@@ -72,14 +82,18 @@ def update_id(id):
     consulta = read_id(id)
     if consulta: # existe nome no banco de dados
         produto=request.args.to_dict() #{chave: valor, chave:valor,...}
-        print(produto)
-        if produto: # se tem argumento
+        if produto['quantidade'] != '0':
+            if produto: # se tem argumento
+                con, cur = abrir_con(banco)
+                cur.execute(update, produto)
+                fechar_con(con)
+                return produto
+            else: # se não tem argumento
+                return render_template('atualizacao.html', produto=consulta[0],id=id)
+        else:
             con, cur = abrir_con(banco)
-            cur.execute(update, produto)
+            resultado = cur.execute(delete_id, [id]).rowcount
             fechar_con(con)
-            return produto
-        else: # se não tem argumento
-            return render_template('atualizacao.html', produto=consulta[0],id=id)
     else: # não existe no banco de dados
         return {'erro': 'produto não encontrado!'}
 
@@ -108,14 +122,14 @@ def read():
     fechar_con(con)
     return resultado
 
-@app.route('/read/<id>/')
+@app.route('/read_id/<id>/')
 def read_id(id):
     con, cur = abrir_con(banco)
     resultado = cur.execute(select_id, [id]).fetchall()
     fechar_con(con)
     return resultado
 
-@app.route('/read/<nome>/')
+@app.route('/read_nome/<nome>/')
 def read_nome(nome):
     con, cur = abrir_con(banco)
     resultado = cur.execute(select_nome, [nome]).fetchall()
