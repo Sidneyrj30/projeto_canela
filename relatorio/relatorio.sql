@@ -32,7 +32,7 @@ VALUES
 SELECT * from `VENDAS`;
 
 -- SELECT * FROM VENDAS ORDER BY quantidade DESC;
- SELECT nome, preco, sum(quantidade) as quantidade FROM VENDAS GROUP BY nome, preco;
+ SELECT nome, preco, sum(quantidade) as quantidade, round(sum(quantidade) * preco, 2) as total FROM VENDAS GROUP BY nome, preco;
 
 DELETE FROM VENDAS;
 
