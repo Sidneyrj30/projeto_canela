@@ -1,19 +1,9 @@
-from flask import Flask, render_template,request,redirect, flash
+from flask import Flask, render_template,request,redirect
 import pandas as pd
 import requests
-import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "my super secret key"
-
-df = pd.read_json('data.json')
-produtos = df.to_dict('records')
-
-Carrinho = pd.DataFrame([])
-Relatorio = pd.DataFrame([])
-
-def convert_string_to_int(dict_):
-    dict_["quantidade"] = int(dict_["quantidade"])
 
 @app.route('/')
 def index():
@@ -101,32 +91,28 @@ def updateCarrinho(id):
 @app.route('/gerarRelatorio')
 def gerarRelatorio():
     cart = requests.get('http://127.0.0.1:8080/read/')
+
     carrinho_list = cart.json()
     carrinho = pd.DataFrame(carrinho_list, columns= ["id", "nome", "quantidade", "preco"])
     carrinho.drop('id', inplace=True, axis=1)
     carrinho_dict = carrinho.to_dict("records")
+
     for item in carrinho_dict:
         requests.post("http://127.0.0.1:3000/registro",json = item)
 
     requests.get('http://127.0.0.1:8080/delete_all') 
     return redirect('/relatorio')
 
-#=====================================================
-
 @app.route('/relatorio')
 def relatorio():
-    cart = requests.get('http://127.0.0.1:8080/read/')
     url = "http://127.0.0.1:3000/consulta_agrupada"
     response = requests.get(url)
-    relatorio = response.json()
-    for produto in relatorio:
-        produto["quantidade"] = int(produto["quantidade"])   
+    relatorio = response.json() 
+    print(relatorio) 
     total = 0
     for produto in relatorio:
-        total = total + produto["quantidade"] * produto["preco"]
-    return render_template('relatorio.html', 
-    relatorio = relatorio,carrinho = cart.json(),
-    total=total) 
+        total = total + produto["total"]
+    return render_template('relatorio.html', relatorio = relatorio,total=total) 
 
 if __name__ == '__main__':
     app.run(app.run(port=8085, host='0.0.0.0', debug=True))
