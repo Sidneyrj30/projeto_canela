@@ -8,14 +8,14 @@ def abrir_conexao(dicionario=False):
         conexao = sql.connect(
         host="127.0.0.1",
         user="root",
-        password="9291",
-        database="projeto_canela"
+        password="vB?#",
+        database="projeto_canela_teste"
     )
     else:
         conexao = sql.connect(
         host="127.0.0.1",
         user="root",
-        password="9291",
+        password="vB?#",
         database="projeto_canela"
         )
     cursor = conexao.cursor(dictionary=dicionario)
