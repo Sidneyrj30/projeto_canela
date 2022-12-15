@@ -80,7 +80,11 @@ def adicionarCarrinho(nome,preco):
 @app.route('/carrinho')
 def carrinho():
     cart = requests.get('http://127.0.0.1:8080/read/')
-    return render_template('carrinho.html', carrinho = cart.json())
+    total_carrinho = cart.json()
+    total=0
+    for produto in total_carrinho:
+        total = total + (produto[2]*produto[3])
+    return render_template('carrinho.html', carrinho = cart.json(),total = total)
 
 @app.route('/deletarCarrinho/<id>')
 def deletarCarrinho(id):
@@ -105,12 +109,13 @@ def gerarRelatorio():
         requests.post("http://127.0.0.1:3000/registro",json = item)
 
     requests.get('http://127.0.0.1:8080/delete_all') 
-    return redirect('/carrinho')
+    return redirect('/relatorio')
 
 #=====================================================
 
 @app.route('/relatorio')
 def relatorio():
+    cart = requests.get('http://127.0.0.1:8080/read/')
     url = "http://127.0.0.1:3000/consulta_agrupada"
     response = requests.get(url)
     relatorio = response.json()
@@ -120,7 +125,7 @@ def relatorio():
     for produto in relatorio:
         total = total + produto["quantidade"] * produto["preco"]
     return render_template('relatorio.html', 
-    relatorio = relatorio, carrinho = Carrinho.to_dict('records'),
+    relatorio = relatorio,carrinho = cart.json(),
     total=total) 
 
 if __name__ == '__main__':

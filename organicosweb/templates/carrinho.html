@@ -37,7 +37,6 @@
                                         <br>
                                         Total: R${{"%.2f" | format(item[3]*item[2])}}
                                         <br>
-                                        <!-- <button type="submit" class="btn btn-light" >Atualizar quantidade</button> -->
                                       </form>
                                     <!-- =============== -->
                                 </div>
@@ -52,6 +51,7 @@
                 </div>
             </div> 
         </section>
+        <div class="text-center mb-5"><a >Total Carrinho: R$ {{total}}</a></div>
         <div class="text-center mb-5"><a class="btn btn-outline-dark mt-auto" href='/gerarRelatorio'>Finalizar compra</a></div>
     {% else %}
         <div class="jumbotron text-center mx-auto" style="margin-top: 100px; margin-bottom: 270px;">
