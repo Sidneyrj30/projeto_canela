@@ -9,40 +9,44 @@ def test_cadastrar(client):
     resultado = client.get('/cadastrar/?nome=teste&preco=4&quantidade=10')
     client.get('deletar/teste')
     assert resultado.json == {"nome": "teste","preco": "4", "quantidade": "10"}
-
+# valida os dados cadastrados
 def test_cadastrar_status(client):
     resultado = client.get('/cadastrar/?nome=teste&preco=4&quantidade=10')
     assert resultado.status_code == 200
-
-def test_read_status(client):
-    resultado = client.get('/consultar/')
-    assert resultado.status_code == 200
+# valida o status cadastro
 
 def test_read_content(client):
     resultado = client.get('/consultar/')
     assert resultado.json == [{"nome": "teste","preco": "4","quantidade": "10"}]
 
-def test_read_id_status(client):
-    resultado = client.get('/consultar/teste')
+def test_read_status(client):
+    resultado = client.get('/consultar/')
     assert resultado.status_code == 200
 
-def test_read_id_content(client):
+def test_read_name_content(client):
     resultado = client.get('/consultar/teste')
     assert resultado.json == {"nome": "teste","preco": "4","quantidade": "10"}
 
-def test_update_id_status(client):
+
+def test_read_name_status(client):
+    resultado = client.get('/consultar/teste')
+    assert resultado.status_code == 200
+
+
+
+def test_update_name_status(client):
     resultado = client.get('/atualizar/?nome=teste&preco=5&quantidade=10')
     assert resultado.status_code == 200
 
-def test_update_id_content(client):
+def test_update_name_content(client):
     resultado = client.get('/atualizar/?nome=teste&preco=5&quantidade=10')
     assert resultado.json == {"nome": "teste","preco": "5","quantidade": "10"}
 
-def test_delete_produto_content(client):
+def test_delete_name_content(client):
     resultado = client.get('/deletar/teste')
     assert resultado.json == { "message": "Produto deletado!" }
 
-def test_delete_produto_status(client):
+def test_delete_name_status(client):
     client.get('/cadastrar/?nome=teste&preco=4&quantidade=10')
     resultado = client.get('/deletar/teste')
     assert resultado.status_code == 200
